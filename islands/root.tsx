@@ -1,6 +1,7 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import Clock from "./clock.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 let i = 0;
 const getCoords = (): GeolocationCoordinates => {
@@ -16,6 +17,7 @@ const timeConvert = (second: number) =>
     Math.round(second + 240 * getCoords().longitude);
 
 export default () => {
+    if (!IS_BROWSER) return <svg/>
     const second = useSignal(timeConvert(Date.now()/1000));
     useEffect(() => {
         const interval = setInterval(() => {
