@@ -43,13 +43,16 @@ const dizhiText = () => {
     return result;
 }
 const bhourLine = (second: number) => {
-    const [x2, y2] = clockCoor2SvgCoor([420, second/86400]);
-    return <line x1="0" y1="0" x2={x2} y2={y2}/>
+    const remain = second%86400/86400;
+    const [x1, y1] = clockCoor2SvgCoor([90, remain])
+    const [x2, y2] = clockCoor2SvgCoor([420, remain]);
+    return <line x1={x1} y1={y1} x2={x2} y2={y2}/>;
 }
 const bsecondLine = (second: number) => {
     const remain = second%86400%3600%900/900;
+    const [x1, y1] = clockCoor2SvgCoor([90, remain])
     const [x2, y2] = clockCoor2SvgCoor([511, remain]);
-    return <line x1="0" y1="0"  x2={x2} y2={y2}/>
+    return <line x1={x1} y1={y1} x2={x2} y2={y2}/>;
 }
 const totalText = (second: number) => {
     let remain = Math.round(second%(24*60*60));
@@ -61,7 +64,7 @@ const totalText = (second: number) => {
     remain %= 100;
     const shi = Math.floor(remain/10);
     remain %= 10;
-    return <g x="0" y="0" font-size="36" text-anchor="middle" filter="invert(100%)">
+    return <g x="0" y="0" font-size="36" text-anchor="middle">
         <text alignment-baseline="text-after-edge">{ebdtext[hour]}{quartertext[quarter]}</text>
         <text alignment-baseline="text-before-edge">{dititalCn[bai]}{dititalCn[shi]}{dititalCn[remain]}</text>;
     </g>
@@ -71,10 +74,9 @@ interface IClockProps {
     second: Signal<number>;
 }
 export default ({second}: IClockProps) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="-512 -512 1024 1024" fill="currentcolor" stroke="currentcolor">
-    <g fill="none" stroke-width="2">{[511, 500, 436, 424].map(r => <circle r={r}/>)}</g>
+    <g fill="none" stroke-width="2">{[511, 500, 436, 424, 90].map(r => <circle r={r}/>)}</g>
     <g font-size="48" text-anchor="middle">{dizhiText()}</g>
     <g stroke-width="2">{quarterLine()}{secondLine()}</g>
-    <circle r="90"/>
     <g stroke-width="2">{bhourLine(second.value)}{bsecondLine(second.value)}</g>
     {totalText(second.value)}
 </svg>
