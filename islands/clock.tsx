@@ -1,12 +1,14 @@
 import { Signal } from "@preact/signals";
 import { ebtext, ebdtext, quartertext, dititalCn } from "../lib/eb.ts";
 
-const [r1, r2, r3, r4, r5] = [120, 424, 436, 498, 510];
+const width = 512;
+const height = 512;
+const [r1, r2, r3, r4, r5] = [4, 194, 200, 248, 254];
 const tquart = 96;
 const tsecond = 180;
 const bhour = 12;
-const longScale = 12;
-const shortScale = 6;
+const longScale = 6;
+const shortScale = 3;
 
 const clockCoor2SvgCoor = ([radius, angleCents]: [number, number]) => {
     const radian = 2 * Math.PI * angleCents;
@@ -45,22 +47,22 @@ const secondLine = () => {
 }
 const dizhiText = () => {
     const result = [];
-    const r = (r3+r4)/2;
+    const r = (r2+r4-2)/2;
     for (let i = 0; i < bhour; i++) {
         const [x, y] = clockCoor2SvgCoor([r, i/bhour]);
-        result.push(<text x={x} y={y} alignment-baseline="central" transform-origin={`${x} ${y}`} transform={`rotate(${i*30})`}>{ebtext[i]}</text>);
+        result.push(<text x={x} y={y} alignment-baseline="middle" transform-origin={`${x} ${y}`} transform={`rotate(${i*30})`}>{ebtext[i]}</text>);
     }
     return result;
 }
 const bhourLine = (second: number) => {
     const remain = second%86400/86400;
-    const [x1, y1] = clockCoor2SvgCoor([r1, remain])
+    const [x1, y1] = clockCoor2SvgCoor([-4*r1, remain])
     const [x2, y2] = clockCoor2SvgCoor([r2-2, remain]);
     return <line x1={x1} y1={y1} x2={x2} y2={y2}/>;
 }
 const bsecondLine = (second: number) => {
     const remain = second%86400%3600%900/900;
-    const [x1, y1] = clockCoor2SvgCoor([r1, remain])
+    const [x1, y1] = clockCoor2SvgCoor([-4*r1, remain])
     const [x2, y2] = clockCoor2SvgCoor([r4-2, remain]);
     return <line x1={x1} y1={y1} x2={x2} y2={y2}/>;
 }
@@ -83,10 +85,12 @@ const totalText = (second: number) => {
 interface IClockProps {
     second: Signal<number>;
 }
-export default ({second}: IClockProps) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="-512 -512 1024 1024" fill="currentcolor" stroke="currentcolor">
-    <g fill="none" stroke-width="2">{[r1,r2,r3,r4,r5].map(r => <circle r={r}/>)}</g>
+export default ({second}: IClockProps) => <svg xmlns="http://www.w3.org/2000/svg"
+    viewBox={`${-width/2} ${-height/2} ${width} ${height}`} fill="currentcolor" stroke="currentcolor">
+    <g fill="none" stroke-width="1">{[r2,r3,r4,r5].map(r => <circle r={r}/>)}</g>
+    <circle r={r1}/>
     <g font-size="48" text-anchor="middle">{dizhiText()}</g>
-    <g stroke-width="2">{quarterLine()}{secondLine()}</g>
-    <g stroke-width="2">{bhourLine(second.value)}{bsecondLine(second.value)}</g>
+    <g stroke-width="1">{quarterLine()}{secondLine()}</g>
+    <g stroke-width="1">{bhourLine(second.value)}{bsecondLine(second.value)}</g>
     {totalText(second.value)}
 </svg>
