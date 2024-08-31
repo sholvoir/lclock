@@ -3,5 +3,4 @@
    <path d="M 0,-160 a 80 80 0 0 1 0 160 a 80 80 0 0 0 0 160 a 160 160 0 0 0 0 -320 z" fill="black" stroke="gray"/>
    <circle cx="0" cy="-80" r="20" fill="black"/>
    <circle cx="0" cy="+80" r="20" fill="white"/>
-   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite" />
 </svg>
