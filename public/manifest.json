@@ -1,19 +1,18 @@
 {
     "name": "YourClock",
     "short_name": "YourClock",
-    "start_url": "/",
+    "start_url": ".",
     "display": "standalone",
     "display_override": ["window-controls-overlay"],
     "icons": [
-        { "src": "icon/tj-120.png", "sizes": "120x120", "type": "image/png", "purpose": "any" },
         { "src": "icon/tj-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
         { "src": "icon/tj-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
         { "src": "icon/tj-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
         { "src": "icon/tj-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+        { "src": "icon/tj.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
         { "src": "icon/tj-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
         { "src": "icon/tj-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
         { "src": "icon/tj-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" },
-        { "src": "icon/tj.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
         { "src": "icon/tj.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
     ]
 }
