@@ -1,5 +1,5 @@
-import { Signal } from "@preact/signals";
-import { ebtext, ebdtext, quartertext, dititalCn } from "../lib/eb.ts";
+import { type JSX, type Accessor, For } from "solid-js";
+import { ebtext, ebdtext, quartertext } from "../lib/eb.ts";
 
 const width = 512;
 const height = 512;
@@ -16,7 +16,7 @@ const clockCoor2SvgCoor = ([radius, angleCents]: [number, number]) => {
 }
 
 const quarterLine = () => {
-    const result = [];
+    const result: Array<JSX.Element> = [];
     const h = tquart / 2
     for (let i = 0; i < h; i++) {
         const [x1, y1] = clockCoor2SvgCoor([r3-longScale, i/h]);
@@ -31,7 +31,7 @@ const quarterLine = () => {
     return result;
 }
 const secondLine = () => {
-    const result = [];
+    const result: Array<JSX.Element> = [];
     const h = tsecond/2;
     for (let i = 0; i < h; i++) {
         const [x1, y1] = clockCoor2SvgCoor([r5-longScale, i/h]);
@@ -46,7 +46,7 @@ const secondLine = () => {
     return result;
 }
 const dizhiText = () => {
-    const result = [];
+    const result: Array<JSX.Element> = [];
     const r = (r2+r4-2)/2;
     for (let i = 0; i < bhour; i++) {
         const [x, y] = clockCoor2SvgCoor([r, i/bhour]);
@@ -72,25 +72,25 @@ const totalText = (second: number) => {
     remain %= 60*60;
     const quarter = Math.floor(remain/(15*60));
     remain %= 15*60;
-    const bai = Math.floor(remain/100);
-    remain %= 100;
-    const shi = Math.floor(remain/10);
-    remain %= 10;
-    return <g x="0" y="0" font-size="48" text-anchor="middle">
-        <text alignment-baseline="text-after-edge">{ebdtext[hour]}{quartertext[quarter]}</text>
-        <text alignment-baseline="text-before-edge">{dititalCn[bai]}{dititalCn[shi]}{dititalCn[remain]}</text>;
-    </g>
+    // const bai = Math.floor(remain/100);
+    // remain %= 100;
+    // const shi = Math.floor(remain/10);
+    // remain %= 10;
+    return <text font-size="48" text-anchor="middle" alignment-baseline="text-after-edge">{ebdtext[hour]}{quartertext[quarter]}</text>
 }
 
 interface IClockProps {
-    second: Signal<number>;
+    second: Accessor<number>;
 }
+// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
 export default ({second}: IClockProps) => <svg xmlns="http://www.w3.org/2000/svg"
     viewBox={`${-width/2} ${-height/2} ${width} ${height}`} fill="currentcolor" stroke="currentcolor">
-    <g fill="none" stroke-width="1">{[r2,r3,r4,r5].map(r => <circle r={r}/>)}</g>
+    <g fill="none" stroke-width="1">
+        <For each={[r2,r3,r4,r5]}>{r => <circle r={r}/>}</For>
+        </g>
     <circle r={r1}/>
     <g font-size="48" text-anchor="middle">{dizhiText()}</g>
     <g stroke-width="1">{quarterLine()}{secondLine()}</g>
-    <g stroke-width="1">{bhourLine(second.value)}{bsecondLine(second.value)}</g>
-    {totalText(second.value)}
+    <g stroke-width="1">{bhourLine(second())}{bsecondLine(second())}</g>
+    {totalText(second())}
 </svg>
