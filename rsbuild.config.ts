@@ -11,8 +11,11 @@ export default defineConfig({
    ],
    output: {
       distPath: {
-         root: '../sholvoir.github.io/lclock'
+         root: '../sholvoir.github.io/lclock',
+         js: './',
+         css: './'
       },
+      assetPrefix: './',
       cleanDistPath: true,
    },
    html: {
