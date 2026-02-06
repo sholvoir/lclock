@@ -11,7 +11,7 @@ export default defineConfig({
    ],
    output: {
       distPath: {
-         root: '../sholvoir.github.io/lclock',
+         root: './docs',
          js: './',
          css: './'
       },
